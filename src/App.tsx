@@ -2,6 +2,7 @@ import { LogIn } from './LogIn'
 import { TicTacToe } from './TicTacToe'
 
 import './App.css'
+import { UsersList } from './UsersList'
 
 function App() {
   return (
@@ -11,6 +12,8 @@ function App() {
       <LogIn />
 
       <TicTacToe />
+
+      <UsersList />
     </>
   )
 }
