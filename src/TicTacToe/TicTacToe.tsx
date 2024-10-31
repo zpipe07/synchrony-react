@@ -1,103 +1,65 @@
 import { useState } from 'react'
 
+import { Board } from './Board'
+
 import './TicTacToe.css'
 
-type BoardRow = (null | 'x' | 'o')[]
-
-type Board = BoardRow[]
-
-const initialBoard: Board = [
-  [null, null, null],
-  [null, null, null],
-  [null, null, null],
-]
+export type SquareValue = 'X' | 'O' | null
 
 export const TicTacToe: React.FC = () => {
-  const [board, setBoard] = useState<Board>(initialBoard)
+  const [squares, setSquares] = useState<SquareValue[]>(Array(9).fill(null))
 
-  const [turn, setTurn] = useState<'x' | 'o'>('x')
+  const [turn, setTurn] = useState<'X' | 'O'>('X')
 
-  const calculateWinner = (board: Board) => {
-    const winningRow = board.findIndex((row) => {
-      const firstValue = row[0]
-      const isWinner = firstValue && row.every((value) => value === firstValue)
+  const [winner, setWinner] = useState<SquareValue>(null)
 
-      return isWinner
-    })
+  const calculateWinner = (squares: SquareValue[]) => {
+    const lines = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ]
 
-    const winningCol = board.findIndex((_, i) => {
-      const col = board.map((row) => {
-        return row[i]
-      })
-      const firstValue = col[0]
-      const isWinner = firstValue && col.every((value) => value === firstValue)
+    for (let i = 0; i < lines.length; i++) {
+      const [a, b, c] = lines[i]
+      if (
+        squares[a] &&
+        squares[a] === squares[b] &&
+        squares[a] === squares[c]
+      ) {
+        return squares[a]
+      }
+    }
 
-      return isWinner
-    })
-
-    const winningDiagonalLtr =
-      board[0][0] && board[0][0] === board[1][1] && board[1][1] === board[2][2]
-    const winningDiagonalRtl =
-      board[2][0] && board[2][0] === board[1][1] && board[1][1] === board[0][2]
-
-    console.log({
-      winningRow,
-      winningCol,
-      winningDiagonalLtr,
-      winningDiagonalRtl,
-    })
-
-    return !!winningRow
+    return null
   }
 
-  const handleClick = (i: number, j: number) => {
-    const newBoard = [...board]
-    newBoard[i][j] = turn
-    const winner = calculateWinner(newBoard)
+  const handleSquareClick = (index: number) => {
+    const newSquares = [...squares]
+    newSquares[index] = turn
+    setSquares(newSquares)
 
-    setBoard(newBoard)
-    setTurn(turn === 'x' ? 'o' : 'x')
+    const winner = calculateWinner(newSquares)
+
+    setWinner(winner)
+    setTurn(turn === 'X' ? 'O' : 'X')
   }
 
   return (
-    <section>
-      <h2>TicTacToe</h2>
-      <h3>Turn: {turn}'s</h3>
+    <section style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)', padding: '1rem' }}>
+      <h2 style={{ textAlign: 'center', marginTop: 0, marginBottom: '1rem' }}>
+        TicTacToe
+      </h2>
+      <h3 style={{ textAlign: 'center', marginTop: 0, marginBottom: '1rem' }}>
+        {winner ? `The winner is ${winner}!` : `${turn}'s turn`}
+      </h3>
 
-      <div
-        style={{
-          maxWidth: '30rem',
-          display: 'grid',
-          gridTemplateRows: 'repeat(3, 8rem)',
-          gridTemplateColumns: '33.33% 33.33% 33.33%',
-          gap: '0.25rem',
-          margin: '0 auto',
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        }}
-      >
-        {board.map((row, i) => {
-          return row.map((value, j) => {
-            return (
-              <button
-                key={`${i}${j}`}
-                type="button"
-                onClick={() => handleClick(i, j)}
-                disabled={!!value}
-                style={{
-                  height: '100%',
-                  margin: 0,
-                  backgroundColor: 'white',
-                  border: 'none',
-                  fontSize: '3rem',
-                  cursor: 'pointer',
-                }}
-              >
-                {value}
-              </button>
-            )
-          })
-        })}
-      </div>
+      <Board squares={squares} onSquareClick={handleSquareClick} />
     </section>
   )
 }
