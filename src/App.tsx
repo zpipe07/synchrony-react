@@ -1,4 +1,5 @@
 import { LogIn } from './LogIn'
+import { TicTacToe } from './TicTacToe'
 
 import './App.css'
 
@@ -8,6 +9,8 @@ function App() {
       <h1>Hello, world!</h1>
 
       <LogIn />
+
+      <TicTacToe />
     </>
   )
 }

@@ -1,0 +1,7 @@
+.board {
+  max-width: 30rem;
+  display: grid;
+  grid-template-rows: 5rem 5rem 5rem;
+  grid-template-columns: 33.33% 33.33% 33.33%;
+  margin: 0 auto;
+}
