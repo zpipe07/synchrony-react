@@ -1,0 +1,30 @@
+form {
+  max-width: 20rem;
+  margin: 0 auto;
+}
+
+fieldset {
+  border-radius: 0.5rem;
+  padding: 2rem;
+}
+
+legend {
+}
+
+label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input {
+  display: block;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+button {
+  display: block;
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1rem;
+}
