@@ -1,19 +1,24 @@
 import { FormEvent } from 'react'
 
+import { Credentials, useLogIn } from './useLogIn'
+
 import './LogIn.css'
 
 export const LogIn: React.FC = () => {
+  const { logIn, isLoading, logInData } = useLogIn()
+  console.log({ isLoading, logInData })
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.target as HTMLFormElement)
-    const formValues = Object.fromEntries(formData)
+    const formValues = Object.fromEntries(formData) as Credentials
 
-    console.log({ formData, formValues })
+    logIn(formValues)
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <fieldset>
+      <fieldset disabled={isLoading}>
         <legend>Log in</legend>
 
         <label htmlFor="email">Email</label>
