@@ -2,7 +2,7 @@ import { FormEvent } from 'react'
 
 import { Credentials, useLogIn } from './useLogIn'
 
-import './LogIn.css'
+const formFields = ['email', 'password']
 
 export const LogIn: React.FC = () => {
   const { logIn, isLoading, logInData } = useLogIn()
@@ -17,18 +17,45 @@ export const LogIn: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <fieldset disabled={isLoading}>
-        <legend>Log in</legend>
+    <section style={{ maxWidth: '20rem', margin: '0 auto', padding: '1rem' }}>
+      <h2>Log in</h2>
 
-        <label htmlFor="email">Email</label>
-        <input id="email" name="email" type="email" />
+      <form onSubmit={handleSubmit}>
+        <fieldset
+          disabled={isLoading}
+          style={{
+            // border: '1px solid',
+            // borderRadius: '0.25rem',
+            // padding: '0.5rem 1rem',
+            padding: '1rem',
+          }}
+        >
+          {/* <legend>Log in</legend> */}
 
-        <label htmlFor="password">Password</label>
-        <input type="password" id="password" name="password" />
+          {formFields.map((value) => {
+            return (
+              <div key={value}>
+                <label
+                  htmlFor={value}
+                  style={{ display: 'block', marginBottom: '0.25rem' }}
+                >
+                  {value}
+                </label>
+                <input
+                  id={value}
+                  name={value}
+                  type={value}
+                  style={{ marginBottom: '1rem' }}
+                />
+              </div>
+            )
+          })}
 
-        <button type="submit">Log in</button>
-      </fieldset>
-    </form>
+          <button type="submit" style={{ padding: '0.5rem' }}>
+            Log in
+          </button>
+        </fieldset>
+      </form>
+    </section>
   )
 }
